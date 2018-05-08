@@ -10,8 +10,9 @@ For this project, students should design their own app by including a combinatio
 
 The app will contain the following:
 
-        -RecyclerView Activity where users can enter text for food keywords or choose/take pictures to be used to generate keywords.
-        -RecyclerView Activity where the results of submitting a query containing the ingredient keywords to a recipes database will be displayed. If the user taps on an item, the recipe will be displayed in greater detail.
+-RecyclerView Activity where users can enter text for food keywords or choose/take pictures to be used to generate keywords.
+
+-RecyclerView Activity where the results of submitting a query containing the ingredient keywords to a recipes database will be displayed. If the user taps on an item, the recipe will be displayed in greater detail.
 
 Projected Point Breakdown:
 
@@ -23,7 +24,7 @@ Projected Point Breakdown:
     RecyclerView Holder/Adapter: 6 pts
     Fragment/Screen layouts: At least 2 pts
     Projected Minimum Total: 27 pts
-### "
+ "
 
 ## Design
 
