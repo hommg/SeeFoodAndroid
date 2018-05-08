@@ -5,6 +5,7 @@
 For this project, students should design their own app by including a combination of items selected from a list of content options. For the full list of content options, please see the[Project 4](https://github.com/hommg/SeeFoodAndroid/Project_4.pdf) pdf.
 
 ## Initial Proposal
+
 "
 I will be writing an android translation of an app based on the SeeFood (hotdog/not a hotdog) app from a running gag in season 4 of Silicon Valley. An IOS attempt at this from UMSLHack 2018 can be found [here](https://github.com/hommg/SeeFood).
 
