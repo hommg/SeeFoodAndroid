@@ -2,7 +2,7 @@
 
 ## Guidelines
 
-For this project, students should design their own app by including a combination of items selected from a list of content options. For the full list of content options, please see the [Project 4](https://github.com/hommg/SeeFoodAndroid/Project_4.pdf) pdf.
+For this project, students should design their own app by including a combination of items selected from a list of content options. For the full list of content options, please see the [Project 4](https://github.com/hommg/SeeFoodAndroid/blob/master/Project_4.pdf) pdf.
 
 ## Initial Proposal
 ### "
