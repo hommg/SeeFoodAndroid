@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="60dp"
+    android:height="60dp"
+    android:viewportWidth="60.0"
+    android:viewportHeight="60.0">
+
+    <path
+        android:name="@string/check_mark_name"
+        android:strokeColor="@color/white"
+        android:strokeWidth="4"
+        android:pathData="M15,30 L15,30 L25,45 L45,15" />
+        <!--<path android:pathData="M0 0h24v24H0z" />-->
+</vector>

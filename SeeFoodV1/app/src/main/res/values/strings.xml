@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">SeeFoodV1</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="addButton_text">Add</string>
+    <string name="clearButton_text">Clear</string>
+    <string name="check_mark_name">check_mark</string>
+    <string name="ingredients_label_text">Ingredients:</string>
+    <string name="type_ingredient_text">Type Ingredient</string>
+    <string name="take_photo_text">Take Photo</string>
+    <string name="select_photo_text">Select Photo</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="options_title_text">Choose a method:</string>
+    <string name="enter_ingredient_text">Enter ingredient:</string>
+    <string name="invalid_input_text">Invalid input.</string>
 </resources>

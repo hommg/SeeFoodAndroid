@@ -30,6 +30,64 @@ Projected Point Breakdown:
 
 ## Submission
 
+Activity: 3
+
+    -MainActivity.kt
+    -RecipesActivity.kt
+    -RecipeDetailActivity.kt
+    
+Fragment: 2
+
+    -IngredientDisplayFragment.kt
+    -RecipesDisplayFragment.kt
+    
+AsyncTask, Handler: 2
+
+    -MainActivity.kt line 126
+    -MainAMainActivity.kt line 159
+    
+Drawables: 1
+
+    -check_mark_white.xml
+    
+Layout Files: 4
+
+    -activity_main.xml
+    -actiactivity_recipes.xml
+    -fragment_ingredient_display.xml
+    -ingredients_list_simple.xml
+
+SQLITE: 2-4?
+
+    -SeeFoodModel.kt line 51
+    -MainActivity.kt line 128
+    
+Data structure/class: 3
+
+    -Recipe.kt
+    -FoodList.ky
+    -SeeFoodModel.kt
+    
+Network Request/Response: 3?
+
+    -SeeFoodModel.kt line 51
+    
+RecyclerView, Holder, Adapter: 6
+
+    -IngredientDisplayFragment.kt
+    -IngredientsAdapter.kt
+    -RecipesDisplayFragment.kt
+    -RecipesAdapter.kt
+    
+Calling other Application's API's: 2
+
+    -MainActivity.kt line 212
+    
+Proposed Total:
+
+    min = 25
+    max =
+
 ## TODO
 
 
