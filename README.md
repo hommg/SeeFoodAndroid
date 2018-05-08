@@ -90,4 +90,12 @@ Proposed Total:
 
 ## TODO
 
+-Implement orientation changes.
+
+-Develop and train model.
+
+-Implement `GalleryHelper`
+
+-Implement `RapidBase` and `RecipesActivity` and `RecipesDetailActivity`
+
 
