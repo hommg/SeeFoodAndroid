@@ -86,7 +86,7 @@ Calling other Application's API's: 2
 
     -MainActivity.kt line 212
     
-Proposed Total: 30
+Submission Proposed Total: 30
 
 ## TODO
 
