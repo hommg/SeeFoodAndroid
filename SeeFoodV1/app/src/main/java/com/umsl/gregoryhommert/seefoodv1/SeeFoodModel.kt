@@ -1,6 +1,9 @@
 package com.umsl.gregoryhommert.seefoodv1
 
+import android.util.Log
 import com.umsl.gregoryhommert.seefoodv1.utilities.Recipe
+import org.json.JSONArray
+
 
 class SeeFoodModel {
     //MARK:- Vars
@@ -24,12 +27,30 @@ class SeeFoodModel {
 
     //MARK:- Validations
     fun isValidInput(input: String): Boolean {
-        return input.filter { !it.isLetter() }.isEmpty()
+        return input.filter { !it.isLetter() && it != ' ' }.isEmpty()
+    }
+
+    //MARK:- Getters
+    fun getPathString(): String {
+        //MARK:- Instantiate Path
+        var path = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?number=20&ingredients="
+
+        //MARK:- Append Path Components
+        for (ingredient in ingredients) {
+            if (ingredient.contains( " ")) {
+                val temp = ingredient.replace(" ", "%20")
+                path += temp + "%2C"
+            } else {
+                path += ingredient + "%2C"
+            }
+        }
+        Log.e("MODEL", "MODEL: path = ${path}")
+        return path
     }
 
     //MARK:- Mutations
     fun addIngredient(ingredient: String) {
-        this.ingredients.add(ingredient)
+        this.ingredients.add(ingredient.toLowerCase())
         listener?.dataUpdated()
     }
 
@@ -43,20 +64,19 @@ class SeeFoodModel {
         listener?.dataUpdated()
     }
 
-//    fun removeIngredientAt(index: Int) {
-//        this.ingredients.removeAt(index)
-//        listener?.dataUpdated()
-//    }
-
-    fun getRecipes() {
-        this.recipes.clear()
-
-        //TODO --> api GET query
-
-        listener?.recipesReceived()
+    fun removeIngredientAt(index: Int) {
+        this.ingredients.removeAt(index)
+        Log.e("MODEL", "MODEL: ingredients = ${ingredients}")
+        listener?.dataUpdated()
     }
 
-    fun recipeAt(index: Int): Recipe {
-        return this.recipes[index]
+    fun setRecipes(recipesData: JSONArray) {
+        this.recipes.clear()
+        for (i in 0 until recipesData.length()) {
+            val recipe = Recipe(recipesData.getJSONObject(i))
+            recipes.add(recipe)
+        }
+        Log.e("MODEL", "MODEL: recipes = ${recipes}")
+        listener?.recipesReceived()
     }
 }

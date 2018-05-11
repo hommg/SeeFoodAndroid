@@ -14,4 +14,8 @@
     <string name="options_title_text">Choose a method:</string>
     <string name="enter_ingredient_text">Enter ingredient:</string>
     <string name="invalid_input_text">Invalid input.</string>
+    <string name="details_text">Details</string>
+    <string name="title_text">Title</string>
+    <string name="image_text">Image</string>
+    <string name="recipes_label_text">Recipes:</string>
 </resources>

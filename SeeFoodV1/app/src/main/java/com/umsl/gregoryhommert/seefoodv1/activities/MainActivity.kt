@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
@@ -26,6 +27,12 @@ import com.umsl.gregoryhommert.seefoodv1.fragments.IngredientDisplayFragment
 import com.umsl.gregoryhommert.seefoodv1.utilities.FoodList
 import com.umsl.gregoryhommert.seefoodv1.utilities.ModelHolder
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONArray
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity(), SeeFoodModel.SeeFoodModelListener,
         IngredientDisplayFragment.IngredientDisplayListener {
@@ -34,7 +41,7 @@ class MainActivity : AppCompatActivity(), SeeFoodModel.SeeFoodModelListener,
     companion object {
         private const val MAINACTIVITY = "MainActivity"
         private const val INGREDIENT_DISPLAY_FRAG_TAG = "IngredientDisplayFragment"
-        private const val MODEL_KEY = "ModelKey"
+        private const val MODEL_KEY = "Model"
     }
 
     //MARK:- Vars
@@ -66,7 +73,7 @@ class MainActivity : AppCompatActivity(), SeeFoodModel.SeeFoodModelListener,
     private fun initHelpers() {
         this.cameraHelper = CameraHelper(this)
 //        this.galleryHelper = GalleryHelper(this)
-        this.vrClient = VisualRecognition("2016-05-20")
+        this.vrClient = VisualRecognition("2018-02-17")//2016-05-20
         this.vrClient?.setApiKey("")
     }
 
@@ -88,7 +95,7 @@ class MainActivity : AppCompatActivity(), SeeFoodModel.SeeFoodModelListener,
             model?.clearIngredients()
         }
         this.getButton.setOnClickListener {
-            model?.getRecipes()
+            startDownloadTask()
         }
         this.addButton.setOnClickListener {
             displayAddOptions()
@@ -222,11 +229,98 @@ class MainActivity : AppCompatActivity(), SeeFoodModel.SeeFoodModelListener,
     }
 
     override fun recipesReceived() {
-        //TODO start recipes activity
+        ModelHolder.instance.saveModel(MODEL_KEY, model)
+        val intent = RecipesActivity.newIntent(this@MainActivity)
+        startActivity(intent)
     }
 
     //MARK:- IngredientDisplayListener
     override fun getIngredients(): ArrayList<String>? {
         return model?.ingredients
+    }
+
+
+    override fun removeIngredientAt(position: Int) {
+        model?.removeIngredientAt(position)
+    }
+
+    //MARK:- Downloads
+    private fun startDownloadTask() {
+        val alert = AlertDialog.Builder(this)
+        alert.setMessage("Loading...")
+        alert.setCancelable(false)
+        val dialog = alert.create()
+        dialog.show()
+
+        val manager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        manager.activeNetworkInfo?.let {networkInfo ->
+            if (networkInfo.isConnected) {
+                thread {
+                    model?.getPathString()?.let {
+                        val task = DownloadTask()
+                        val resultData = task.execute(it).get()
+                        Log.e("RESULTS", "What is my data in JSON: $resultData")
+                        runOnUiThread {
+                            resultData?.let {
+                                model?.setRecipes(resultData)
+                            } ?: Log.e("TAG", "RESULT DATA empty")
+
+                            dialog.dismiss()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //MARK:- Async Tasks
+    class DownloadTask: AsyncTask<String, Unit, JSONArray?>() {
+        override fun doInBackground(vararg params: String?): JSONArray? {
+            Log.e("TAG", "START DOWNLOAD TASK")
+            if (params.isEmpty()) {
+                return null
+            }
+            val resultString = downloadDataWith(params[0]!!)
+            if (resultString.isEmpty()) {
+                return null
+            } else {
+                Log.e("RESULTS", "What is my data: $resultString")
+                return JSONArray(resultString)
+            }
+        }
+
+        fun downloadDataWith(urlString: String): String {
+            val url = URL(urlString)
+            val httpClient = url.openConnection() as HttpURLConnection
+            httpClient.setRequestProperty("X-Mashape-Key", "")
+            httpClient.setRequestProperty("X-Mashape-Host", "spoonacular-recipe-food-nutrition-v1.p.mashape.com")
+            httpClient.setRequestProperty("content-type", "application/json")
+//            httpClient.setRequestProperty("accept", "application/json")
+            httpClient.requestMethod = "GET"
+            httpClient.connect()
+
+            var resultString = ""
+
+            when (httpClient.responseCode) {
+                200, 201 -> {
+                    val inStream = httpClient.inputStream
+                    val reader = BufferedReader(InputStreamReader(inStream))
+
+                    var dataString = reader.readLine()
+                    while (dataString != null) {
+                        resultString += dataString
+                        dataString = reader.readLine()
+                    }
+                    reader.close()
+                    Log.e("TAG", "Parsed Data download: ${httpClient.responseCode}")
+                    httpClient.disconnect()
+                }
+                else -> {
+                    Log.e("TAG", "DISCONNECT IN ERROR: ${httpClient.responseCode}")
+                    httpClient.disconnect()
+                }
+            }
+            return resultString
+        }
     }
 }

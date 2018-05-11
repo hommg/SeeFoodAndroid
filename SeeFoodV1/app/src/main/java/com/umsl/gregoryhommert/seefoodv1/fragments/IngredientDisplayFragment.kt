@@ -6,6 +6,7 @@ import android.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,14 +23,14 @@ class IngredientDisplayFragment : Fragment() {
 
     //MARK:- Vars
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewAdapter: IngredientsAdapter//RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-//    private var ingredients = ArrayList<String>()
 
     //MARK:- Listener
     var listener: IngredientDisplayListener? = null
     interface IngredientDisplayListener {
         fun getIngredients(): ArrayList<String>?
+        fun removeIngredientAt(position: Int)
     }
 
     //MARK:- Fragment Lifecycle
@@ -47,32 +48,41 @@ class IngredientDisplayFragment : Fragment() {
 
     //MARK:- Setup
     private fun setUp(view: View) {
-//        this.ingredients = ArrayList<String>()
         listener?.getIngredients()?.let {
-//            this.ingredients.addAll(it)
             this.viewAdapter = IngredientsAdapter(it)
         }
         this.viewManager = LinearLayoutManager(context)
-//        this.viewAdapter = IngredientsAdapter(this.ingredients)
         this.recyclerView = view.findViewById<RecyclerView>(R.id.ingredientList).apply {
             layoutManager = viewManager
             adapter = viewAdapter
         }
 
+        val itemTouchHelperCalback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
+                viewHolder?.let {
+                    listener?.removeIngredientAt(it.adapterPosition)
+//                    viewAdapter.removeIngredientAt(it.adapterPosition)
+                }
+            }
+        }
+
+        ItemTouchHelper(itemTouchHelperCalback).attachToRecyclerView(this.recyclerView)
+
         val divider = DividerItemDecoration(this.recyclerView.context, resources.configuration.orientation)
         this.recyclerView.addItemDecoration(divider)
     }
-
-    //MARK:- Get/Set
-
 
     //MARK:- Updates
     fun dataSetChanged() {
         activity.runOnUiThread({
             viewAdapter.notifyDataSetChanged()
-//            recyclerView.adapter.notifyDataSetChanged()
         })
     }
+
 
 
 }
