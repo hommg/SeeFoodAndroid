@@ -32,6 +32,8 @@ This project consists of 3 activities. The first utilizes a `RecyclerView` to ho
 
 //NOTE:- If you are testing this app on the emulator, please launch and complete the camera tutorial before attempting to use this app. If you do not do so, the first time a camera activity is launched from SeeFood, you will not be able to submit the image you capture. I do not exactly know why this is yet. The emulator is also slightly tricky to take pictures with, thus the ability to type keywords has been included.
 
+//NOTE:- Had ML Kit come out earlier, I would have most likely experimented with using it to vet keywords.
+
 ## Submission
 
 Activity: 3
@@ -92,7 +94,7 @@ Submission Proposed Total: 30
 
 -Implement orientation changes.
 
--Develop and train model.
+-Develop and train model for "Food List" error checking.
 
 -Implement `GalleryHelper`
 
